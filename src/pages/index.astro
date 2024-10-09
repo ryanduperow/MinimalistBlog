@@ -1,0 +1,29 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const recentPosts = posts.slice(0, 3);
+---
+
+<Layout title="Ryan DuPerow's Blog">
+	<h1 class="text-4xl font-bold mb-4">Welcome to Ryan DuPerow's Blog</h1>
+	<p class="mb-8">
+		Hello! I'm Ryan DuPerow, and this is my personal blog where I share my thoughts and experiences on various topics including starting a business, software development, career advice, and more.
+	</p>
+	<h2 class="text-2xl font-semibold mb-4">Latest Posts</h2>
+	<ul class="space-y-4">
+		{recentPosts.map((post) => (
+			<li class="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+				<a href={`/blog/${post.slug}`} class="text-xl font-medium text-accent hover:text-accent-dark">
+					{post.data.title}
+				</a>
+				<p class="mt-2 text-gray-600 dark:text-gray-400">{post.data.description}</p>
+			</li>
+		))}
+	</ul>
+	<p class="mt-8">
+		<a href="/blog" class="text-accent hover:text-accent-dark">View all posts</a>
+	</p>
+</Layout>
